@@ -16,7 +16,7 @@ import static org.junit.Assert.assertTrue;
 public class Get06 extends HerOkuAppBaseUrl {
         /*
         Given
-            https://restful-booker.herokuapp.com/booking/974
+            https://restful-booker.herokuapp.com/booking/204
         When
             User send a GET request to the URL
         Then

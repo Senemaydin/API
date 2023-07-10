@@ -13,6 +13,7 @@ import static io.restassured.RestAssured.given;
 import static io.restassured.RestAssured.replaceFiltersWith;
 import static org.hamcrest.Matchers.hasSize;
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertTrue;
 
 public class Get08 extends JsonPlaceHolderBaseUrl {
 
@@ -39,10 +40,9 @@ Then
 
         //Set the expected data
 
-
         //Send the request and get the response
         Response response = given(spec).get("{first}");
-      //  response.prettyPrint();
+        response.prettyPrint();
 
         //Do assertion
         assertEquals(200, response.statusCode());
@@ -61,13 +61,30 @@ Then
         }
         System.out.println("idsGreaterThan190 =  " +idsGreaterThan190);
 
-        //      Assert that there are 10 ids greater than 190
+        // Assert that there are 10 ids greater than 190
         assertEquals(10, idsGreaterThan190.size());
 
-
         //2.Way : By using Groovy language -->Recommended -->more dynamic
+        //If you have a list with json data elements you can use groovy language to do filter.
+        List<Integer> idSGreaterThan190Groovy = jsonpath.getList("findAll{it.id>190}.id"); //Groovy language --> Java based programming language
+        System.out.println("idSGreaterThan190Groovy  " + idSGreaterThan190Groovy);
 
-        System.out.println(jsonpath.getList("findAll{it.id>190}.title"));
+        //Assert that there are 10 ids greater than 190
+        assertEquals(10, idSGreaterThan190Groovy.size());
+
+        //3)Print all userIds whose ids are less than 5 on the console
+        List<Integer> idLessThan5Groovy =  jsonpath.getList("findAll{it.id<5}.userId");
+        System.out.println("idLessThan5Groovy "  + idLessThan5Groovy);
+
+        //Assert that the number of userIds whose ids are less than 5 is 4
+        assertEquals(4,idLessThan5Groovy.size());
+
+        //4)Print all titles whose ids are less than 5
+        List<String> idLessThan5Title = jsonpath.getList("findAll{it.id<5}.title");
+        System.out.println("idLessThan5Title "  + idLessThan5Title);
+
+        //Assert that "delectus aut autem" is one of the titles whose id is less than 5
+       assertTrue(idLessThan5Title.contains("delectus aut autem"));
 
     }
 }
